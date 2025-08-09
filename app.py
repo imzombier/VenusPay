@@ -125,18 +125,6 @@ TEMPLATE = """
           <button type="submit" class="btn btn-success w-100">✅ Submit Payment</button>
         </form>
       </div>
-
-      <div class="col-lg-6">
-        <div class="p-3 border rounded bg-white">
-          <h6>Payment Summary</h6>
-          <p class="mb-1"><strong>Loan:</strong> {{ settings.loan_number }}</p>
-          <p class="mb-1"><strong>Receiver:</strong> {{ settings.receiver_name }}</p>
-          <p class="mb-1"><strong>UPI ID:</strong> <span class="muted">{{ settings.upi_id }}</span></p>
-          <p class="mb-0"><strong>Default EMI:</strong> ₹{{ "%.2f"|format(settings.emi_amount) }}</p>
-          <hr>
-          <p class="small text-muted">Select screenshot after paying via app/scan. Admin will review and mark payment as approved.</p>
-        </div>
-      </div>
     </div>
     {% else %}
       <div class="alert alert-info">✅ All EMIs are paid. No dues now.</div>
