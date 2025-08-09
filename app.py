@@ -2,6 +2,8 @@ from flask import Flask, render_template_string, request, url_for, redirect, ses
 import os, sqlite3, time
 from werkzeug.utils import secure_filename
 from pathlib import Path
+import requests
+import threading
 
 # ---------------- Config ----------------
 APP_ROOT = Path(__file__).parent
@@ -375,6 +377,20 @@ def pending_count():
     conn.close()
     return jsonify({"pending": cnt})
 
+def keep_alive():
+    url = os.environ.get("RENDER_URL")
+    if not url:
+        raise ValueError("RENDER_URL environment variable is missing! Set it before running the script.")
+
+    while True:
+        try:
+            response = requests.get(url)
+            print(f"Keep-alive ping sent! Status: {response.status_code}")
+        except Exception as e:
+            print(f"Keep-alive request failed: {e}")
+        time.sleep(49)
+
 if __name__ == "__main__":
+    threading.Thread(target=keep_alive, daemon=True).start()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
